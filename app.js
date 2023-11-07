@@ -1,7 +1,57 @@
 const fs = require('fs');
 const express = require('express');
 const app = express();
+const morgan = require('morgan')
+const dotenv = require('dotenv')
+const cors = require('cors')
+const mongoose = require('mongoose')
 
+dotenv.config({path:'./config.env'})
+
+const DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+
+mongoose.connect(DB, {
+  useNewUrlParser : true,
+  useCreateIndex: true,
+  useFindAndmodify: false
+}).then(() => {
+  console.log(`Database connected successfully`)
+})
+
+// simple tour model -------schema------
+// schema
+const tourSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required:[true, 'tour must have a name'],
+    unique: true
+  },
+  rating: {
+    type: Number,
+    default: 4.5
+  },
+  price: {
+    type: Number,
+    required: [true, 'tour must have a price']
+  },
+})
+// the model
+const Tour = mongoose.model('Tour', tourSchema);
+
+const testTour  = new Tour({
+  name:'MAra Tour',
+  price: 27000,
+  rating: 4.9
+})
+
+testTour.save().then(doc => {
+  console.log('doc..:', doc)
+}).catch(err => {
+  console.log('My guy doing your own things i see', err)
+})
+
+// middlewares
+app.use(morgan('dev'))
 app.use(express.json());
 app.use((req, res, next) => {
     console.log('hello from middleware');
@@ -11,12 +61,16 @@ app.use((req, res, next) => {
     req.requestTime = new Date().toISOString()
     next()
 })
+app.use(cors({
+  origin: '*'
+}))
 
 // const tours = fs.readFileSync(`__dirname`)
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
+// route handlers
 const getAllTours = (req, res) => {
     console.log(req.requestTime);
   res.status(200).json({
@@ -95,6 +149,8 @@ const deleteTour = (req, res) => {
   });
 };
 
+
+// routes
 app
     .route('/api/v1/tours')
     .get(getAllTours)
@@ -106,6 +162,7 @@ app
   .patch(updateTour)
   .delete(deleteTour);
 
+// running app
 const port = 3000;
 app.listen(port, () => {
   console.log(`app running on port ${port}`);
