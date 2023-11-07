@@ -5,8 +5,12 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+<<<<<<< HEAD
     "start": "nodemon app.js",
     "start:prod": "NODE_ENV=production nodemon app.js"
+=======
+    "start": "nodemon server.js"
+>>>>>>> 42e2adc8a80e9df2dd143939fafb04f6a9bd8b20
   },
   "author": "tony ishangu",
   "license": "ISC",
@@ -14,7 +18,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+<<<<<<< HEAD
     "mongoose": "^5.13.21",
+=======
+>>>>>>> 42e2adc8a80e9df2dd143939fafb04f6a9bd8b20
     "morgan": "^1.10.0",
     "nodemon": "^2.0.22"
   }
