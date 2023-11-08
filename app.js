@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const fs = require('fs');
 const express = require('express');
 const app = express();
@@ -40,9 +39,9 @@ const tourSchema = new mongoose.Schema({
 const Tour = mongoose.model('Tour', tourSchema);
 
 const testTour  = new Tour({
-  name:'MAra Tour',
-  price: 27000,
-  rating: 4.9
+  name:'test tour',
+  price: 9000,
+  rating: 4.7
 })
 
 testTour.save().then(doc => {
@@ -168,41 +167,3 @@ const port = 3000;
 app.listen(port, () => {
   console.log(`app running on port ${port}`);
 });
-=======
-const fs = require('fs');
-const express = require('express');
-const morgan = require('morgan');
-
-const tourRouter = require('./routes/tours')
-const userRouter = require('./routes/user')
-
-const app = express();
-
-app.use(express.json());
-app.use(morgan('dev'));
-app.use((req, res, next) => {
-  console.log('hello from middleware');
-  next();
-});
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  next();
-});
-
-// const tours = fs.readFileSync(`__dirname`)
-
-
-
-
-
-// routes
-// tour routes
-// const tourRouter = express.Router()
-app.use('/api/v1/tours', tourRouter)
-app.use('/api/v1/users', userRouter)
-
-// user routes
-
-
-module.exports = app
->>>>>>> 42e2adc8a80e9df2dd143939fafb04f6a9bd8b20
