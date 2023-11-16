@@ -18,38 +18,6 @@ mongoose.connect(DB, {
   console.log(`Database connected successfully`)
 })
 
-// simple tour model -------schema------
-// schema
-const tourSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required:[true, 'tour must have a name'],
-    unique: true
-  },
-  rating: {
-    type: Number,
-    default: 4.5
-  },
-  price: {
-    type: Number,
-    required: [true, 'tour must have a price']
-  },
-})
-// the model
-const Tour = mongoose.model('Tour', tourSchema);
-
-const testTour  = new Tour({
-  name:'test tour',
-  price: 9000,
-  rating: 4.7
-})
-
-testTour.save().then(doc => {
-  console.log('doc..:', doc)
-}).catch(err => {
-  console.log('My guy doing your own things i see', err)
-})
-
 // middlewares
 app.use(morgan('dev'))
 app.use(express.json());
